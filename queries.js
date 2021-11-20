@@ -10,16 +10,18 @@ const getArtworks = async (request, response) => {
     let { page, limit } = request.query;
     limit = parseInt(limit);
     offset = limit * parseInt(page);
+
+    if (!limit || !page) return response.status(400).send('Define pagination');
+
     pool.query('SELECT * FROM artworks LIMIT $1 OFFSET $2', [limit, offset], (error, results) => {
         if (error) throw error;
         if (results.rowCount === 0) return response.sendStatus(404);
-        response.status(200).json(results.rows);
+        return response.status(200).json(results.rows);
     });
 };
 
 const getArtworkById = async (request, response) => {
-    let { id } = request.query;
-    id = parseInt(id);
+    const { id } = request.params;
     pool.query('SELECT * FROM artworks WHERE id=$1', [id], (error, results) => {
         if (error) throw error;
         if (results.rowCount === 0) return response.sendStatus(404);
@@ -39,7 +41,7 @@ const getPeriods = async (request, response) => {
 }
 
 const getPeriodsOfArtwork = async (request, response) => {
-    let id = request.params.id;
+    const { id } = request.params;
     pool.query('SELECT name FROM periods WHERE id IN (SELECT period_id FROM periods_artworks WHERE artwork_id=$1)', [id], (error, results) => {
         if (error) throw error;
         if (results.rowCount === 0) return response.sendStatus(404);
@@ -48,7 +50,7 @@ const getPeriodsOfArtwork = async (request, response) => {
 }
 
 const getArtworksOfPeriod = async (request, response) => {
-    let id = request.params.id;
+    const { id } = request.params;
     pool.query('SELECT * FROM artworks WHERE id IN (SELECT artwork_id FROM periods_artworks WHERE period_id=$1)', [id], (error, results) => {
         if (error) throw error;
         if (results.rowCount === 0) return response.sendStatus(404);
@@ -57,8 +59,8 @@ const getArtworksOfPeriod = async (request, response) => {
 }
 
 const getImageFile = async (request, response) => {
-    let id = request.params.id;
-    let { rows } = await pool.query('SELECT file FROM artworks WHERE id=$1', [id]);
+    const { id } = request.params;
+    const { rows } = await pool.query('SELECT file FROM artworks WHERE id=$1', [id]);
     if (rows == '') return response.sendStatus(404);
     const filename = rows[0].file;
 
@@ -66,11 +68,52 @@ const getImageFile = async (request, response) => {
     response.sendFile(__dirname + '/media/' + filename);
 }
 
+// ex localhost:3000/artwork/90/periods/30
+const putPeriodInArtwork = async (request, response) => {
+    const artwork_id = request.params.artwork_id;
+    const period_id = request.params.period_id;
+    pool.query('INSERT INTO periods_artworks VALUES($1, $2)', [artwork_id, period_id], (error, results) => {
+        if (error){
+            if (error.code === '23505') response.status(400).send('Resource already exists')
+            throw error;
+        };
+        return response.sendStatus(201);
+    });
+}
+
+const updateArtwork = async (request, response) => {
+    const { id } = request.params;
+    const { file, artist, year, title } = request.body;
+    console.log(request.body, request.params);
+    const { rows } = await pool.query('SELECT * FROM artworks WHERE id=$1', [id]);
+    const artwork = rows[0];
+    
+    const updateValues = {
+        file: file || artwork.file,
+        artist: artist || artwork.artist,
+        year: year || artwork.year,
+        title: title || artwork.title
+    }
+
+    pool.query('UPDATE artworks SET file=$1, artist=$2, year=$3, title=$4 WHERE id=$5', [updateValues.file, updateValues.artist, updateValues.year, updateValues.title, id], (error, results) => {
+        if (error) {
+            console.log(error);
+            return response.sendStatus(400);
+        };
+        response.sendStatus(200);
+    })
+    console.log(updateValues);
+}
+
+
+
 module.exports = {
     getArtworks,
     getArtworkById,
     getPeriods,
     getPeriodsOfArtwork,
     getArtworksOfPeriod,
-    getImageFile
+    getImageFile,
+    putPeriodInArtwork,
+    updateArtwork
 }
