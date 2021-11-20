@@ -1,10 +1,10 @@
-const { Pool } = require('pg')
-require('dotenv').config()
-const connectionString = process.env.DATABASE_URL
+const { Pool } = require('pg');
+require('dotenv').config();
+const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({
     connectionString,
-  })
+  });
 
 const getArtworks = async (request, response) => {
     let { page, limit } = request.query;
@@ -38,7 +38,7 @@ const getPeriods = async (request, response) => {
         if (results.rowCount === 0) return response.sendStatus(404);
         response.status(200).json(results.rows);
     });
-}
+};
 
 const getPeriodsOfArtwork = async (request, response) => {
     const { id } = request.params;
@@ -46,8 +46,8 @@ const getPeriodsOfArtwork = async (request, response) => {
         if (error) throw error;
         if (results.rowCount === 0) return response.sendStatus(404);
         response.status(200).json(results.rows);
-    })
-}
+    });
+};
 
 const getArtworksOfPeriod = async (request, response) => {
     const { id } = request.params;
@@ -56,7 +56,7 @@ const getArtworksOfPeriod = async (request, response) => {
         if (results.rowCount === 0) return response.sendStatus(404);
         response.status(200).json(results.rows);
     })
-}
+};
 
 const getImageFile = async (request, response) => {
     const { id } = request.params;
@@ -66,7 +66,7 @@ const getImageFile = async (request, response) => {
 
     response.set('Content-Type', 'image/jpg');
     response.sendFile(__dirname + '/media/' + filename);
-}
+};
 
 // ex localhost:3000/artwork/90/periods/30
 const putPeriodInArtwork = async (request, response) => {
@@ -79,12 +79,11 @@ const putPeriodInArtwork = async (request, response) => {
         };
         return response.sendStatus(201);
     });
-}
+};
 
 const updateArtwork = async (request, response) => {
     const { id } = request.params;
     const { file, artist, year, title } = request.body;
-    console.log(request.body, request.params);
     const { rows } = await pool.query('SELECT * FROM artworks WHERE id=$1', [id]);
     const artwork = rows[0];
     
@@ -93,19 +92,41 @@ const updateArtwork = async (request, response) => {
         artist: artist || artwork.artist,
         year: year || artwork.year,
         title: title || artwork.title
-    }
+    };
 
     pool.query('UPDATE artworks SET file=$1, artist=$2, year=$3, title=$4 WHERE id=$5', [updateValues.file, updateValues.artist, updateValues.year, updateValues.title, id], (error, results) => {
         if (error) {
             console.log(error);
             return response.sendStatus(400);
         };
-        response.sendStatus(200);
+        response.status(200).send(`Artwork modified with ID: ${id}`);
     })
     console.log(updateValues);
-}
+};
 
+const postArtwork = async (request, response) => {
+    const { file, artist, year, title } = request.body;
+    if (!file || !artist || !year || !title) return response.sendStatus(400);
+    pool.query('INSERT INTO artworks (file, artist, year, title) VALUES ($1, $2, $3, $4)', [file, artist, year, title], (error, result) => {
+        if (error) {
+            console.log(error);
+            return response.sendStatus(400);
+        };
+        response.sendStatus(201);
+    });
+};
 
+const postPeriod = async (request, response) => {
+    const { period } = request.body;
+    pool.query('INSERT INTO periods (name) VALUES ($1)', [period], (error, result) => {
+        if (error) {
+            console.log(error);
+            return response.sendStatus(400);
+        };
+        response.sendStatus(201);
+    });
+
+};
 
 module.exports = {
     getArtworks,
@@ -115,5 +136,7 @@ module.exports = {
     getArtworksOfPeriod,
     getImageFile,
     putPeriodInArtwork,
-    updateArtwork
-}
+    updateArtwork,
+    postArtwork,
+    postPeriod
+};
