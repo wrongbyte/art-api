@@ -60,22 +60,21 @@ const getArtworksOfPeriod = async (request, response) => {
 
 const getImageFile = async (request, response) => {
     const { id } = request.params;
-    const { rows } = await pool.query('SELECT file FROM artworks WHERE id=$1', [id]);
-    if (rows == '') return response.sendStatus(404);
+    const { rows, rowCount } = await pool.query('SELECT file FROM artworks WHERE id=$1', [id]);
+    if (rowCount === 0) return response.sendStatus(404);
     const filename = rows[0].file;
 
     response.set('Content-Type', 'image/jpg');
     response.sendFile(__dirname + '/media/' + filename);
 };
 
-// ex localhost:3000/artwork/90/periods/30
 const putPeriodInArtwork = async (request, response) => {
     const artwork_id = request.params.artwork_id;
     const period_id = request.params.period_id;
     pool.query('INSERT INTO periods_artworks VALUES($1, $2)', [artwork_id, period_id], (error, results) => {
         if (error){
-            if (error.code === '23505') response.status(400).send('Resource already exists')
-            throw error;
+            if (error.code === '23505') return response.status(400).send('Resource already exists');
+            else return response.sendStatus(400);
         };
         return response.sendStatus(201);
     });
@@ -84,7 +83,8 @@ const putPeriodInArtwork = async (request, response) => {
 const updateArtwork = async (request, response) => {
     const { id } = request.params;
     const { file, artist, year, title } = request.body;
-    const { rows } = await pool.query('SELECT * FROM artworks WHERE id=$1', [id]);
+    const { rows, rowCount } = await pool.query('SELECT * FROM artworks WHERE id=$1', [id]);
+    if (rowCount === 0) return response.sendStatus(404);
     const artwork = rows[0];
     
     const updateValues = {
@@ -108,7 +108,7 @@ const postArtwork = async (request, response) => {
     const { file, artist, year, title } = request.body;
     if (!file || !artist || !year || !title) return response.sendStatus(400);
     pool.query('INSERT INTO artworks (file, artist, year, title) VALUES ($1, $2, $3, $4)', [file, artist, year, title], (error, result) => {
-        if (error) {
+        if (error){
             console.log(error);
             return response.sendStatus(400);
         };
@@ -120,13 +120,22 @@ const postPeriod = async (request, response) => {
     const { period } = request.body;
     pool.query('INSERT INTO periods (name) VALUES ($1)', [period], (error, result) => {
         if (error) {
-            console.log(error);
-            return response.sendStatus(400);
+            if (error.code === '23505') return response.status(400).send('Resource already exists');
+            else return response.sendStatus(400);
         };
         response.sendStatus(201);
     });
-
 };
+
+const updatePeriod = async (request, response) => {
+    const { id } = request.params;
+    const { name } = request.body;
+    pool.query('UPDATE periods SET name=$1 WHERE id=$2', [name, id], (error, result) => {
+        if (error) return response.sendStatus(400);
+    });
+};
+
+
 
 module.exports = {
     getArtworks,
@@ -138,5 +147,6 @@ module.exports = {
     putPeriodInArtwork,
     updateArtwork,
     postArtwork,
-    postPeriod
+    postPeriod,
+    updatePeriod
 };
