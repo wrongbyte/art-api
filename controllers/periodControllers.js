@@ -5,6 +5,9 @@ const getPeriods = async (request, response) => {
     let { page, limit } = request.query;
     limit = parseInt(limit);
     offset = limit * parseInt(page);
+
+    if (!limit || !page) return response.status(400).send('Define pagination');
+
     database().query('SELECT * FROM periods LIMIT $1 OFFSET $2', [limit, offset], (error, results) => {
         if (error) throw error;
         if (results.rowCount === 0) return response.sendStatus(404);
