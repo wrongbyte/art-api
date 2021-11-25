@@ -1,5 +1,21 @@
 const database = require('../db');
-const rootDirectory = require('path').resolve('./')
+const rootDirectory = require('path').resolve('./');
+
+const multer = require('multer');
+const path = require('path');
+const storage = multer.diskStorage({
+
+    destination: function (req, file, cb) {
+      cb(null, path.resolve(rootDirectory + '/media/'))
+    },
+  
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    },
+
+  });
+  
+const uploadImage = multer({storage: storage});
 
 // =========== GET ROUTES ===========
 const getImageFile = async (request, response) => {
@@ -13,5 +29,6 @@ const getImageFile = async (request, response) => {
 };
 
 module.exports = {
-    getImageFile
+    getImageFile,
+    uploadImage
 }
