@@ -17,7 +17,7 @@ PRIMARY KEY("id")
 CREATE TABLE "periods_artworks" (
 "artwork_id"   INT      NOT NULL,
 "period_id"    INT      NOT NULL,
-FOREIGN KEY ("artwork_id")    REFERENCES  "artworks"(id)   ON UPDATE CASCADE ON DELETE RESTRICT,
-FOREIGN KEY ("period_id")    REFERENCES  "periods"(id)   ON UPDATE CASCADE ON DELETE RESTRICT,
+FOREIGN KEY ("artwork_id")   REFERENCES  "artworks"(id)   ON DELETE CASCADE,
+FOREIGN KEY ("period_id")    REFERENCES  "periods"(id)    ON DELETE CASCADE,
 PRIMARY KEY ("artwork_id", "period_id")
 );
