@@ -1,4 +1,5 @@
 const database = require('../db');
+const uploadImage = require('../utils/multer');
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request, response) => {
@@ -71,17 +72,32 @@ const putPeriodInArtwork = async (request, response) => {
 };
 
 // =========== POST ROUTES ===========
-const postArtwork = async (request, response) => {
-    const { file, artist, year, title } = request.body;
-    if (!file || !artist || !year || !title) return response.sendStatus(400);
-    database().query('INSERT INTO artworks (file, artist, year, title) VALUES ($1, $2, $3, $4)', [file, artist, year, title], (error, result) => {
-        if (error){
-            console.log(error);
-            return response.sendStatus(400);
-        };
-        response.sendStatus(201);
-    });
-};
+// The postArtwork works with multipart form data. It happens because we need to upload the corresponding image file for the artwork when we submit it.
+
+const postArtwork = async (request, response, next) => {
+    uploadImage.single('file')(request, response, () => {
+        console.log(request.body);
+        next()
+    })
+}
+
+const handle = (request, response) => {
+    console.log('finished');
+    response.sendStatus(200);
+}
+
+
+// const postArtwork = async (request, response) => {
+//     const { file, artist, year, title } = request.body;
+//     if (!file || !artist || !year || !title) return response.sendStatus(400);
+//     database().query('INSERT INTO artworks (file, artist, year, title) VALUES ($1, $2, $3, $4)', [file, artist, year, title], (error, result) => {
+//         if (error){
+//             console.log(error);
+//             return response.sendStatus(400);
+//         };
+//         response.sendStatus(201);
+//     });
+// };
 
 module.exports = {
     getArtworks,
@@ -89,5 +105,6 @@ module.exports = {
     getPeriodsOfArtwork,
     updateArtwork,
     putPeriodInArtwork,
-    postArtwork
+    postArtwork,
+    handle
 }
