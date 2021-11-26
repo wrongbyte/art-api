@@ -84,8 +84,24 @@ const postArtwork = async (request, response) => {
         };
         response.sendStatus(201);
     });
-}
+};
 
+const deleteArtwork = async (request, response) => {
+    const { id } = request.params;
+    database().query('DELETE FROM artworks WHERE id=$1', [id], (error, results) => {
+        if (error) return response.sendStatus(400);
+        return response.sendStatus(200);
+    });
+};
+
+const deletePeriodFromArtwork = async (request, response) => {
+    const artwork_id = request.params.artwork_id;
+    const period_id = request.params.period_id;
+    database().query('DELETE FROM periods_artworks WHERE artwork_id=$1 AND period_id=$2', [artwork_id, period_id], (error, results) => {
+        if (error) return response.sendStatus(400);
+        return response.sendStatus(200);
+    })
+}
 
 module.exports = {
     getArtworks,
@@ -93,5 +109,7 @@ module.exports = {
     getPeriodsOfArtwork,
     updateArtwork,
     putPeriodInArtwork,
-    postArtwork
+    postArtwork,
+    deleteArtwork,
+    deletePeriodFromArtwork
 }

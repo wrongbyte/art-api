@@ -1,5 +1,5 @@
 const express = require('express');
-const { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork } = require('../controllers/artworkControllers');
+const { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork, deleteArtwork , deletePeriodFromArtwork } = require('../controllers/artworkControllers');
 const uploadImage = require('../utils/multer');
 
 const getArtworkRouter = () => {
@@ -14,7 +14,10 @@ const getArtworkRouter = () => {
     artworkRouter.put('/:id', updateArtwork);
     artworkRouter.put('/:artwork_id/periods/:period_id', putPeriodInArtwork);
 
-    artworkRouter.post('/', postArtwork);
+    artworkRouter.post('/', postArtwork); // must be multipart/form-data
+
+    artworkRouter.delete('/:id', deleteArtwork);
+    artworkRouter.delete('/:artwork_id/periods/:period_id', deletePeriodFromArtwork);
 
     return artworkRouter;
 };
