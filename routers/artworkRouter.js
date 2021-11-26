@@ -1,6 +1,6 @@
 const express = require('express');
 const { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork, deleteArtwork , deletePeriodFromArtwork } = require('../controllers/artworkControllers');
-const uploadImage = require('../utils/multer');
+const uploadImage = require('../config/multer');
 
 const getArtworkRouter = () => {
     artworkRouter = express.Router();

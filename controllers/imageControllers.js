@@ -1,4 +1,4 @@
-const database = require('../db');
+const database = require('../config/db');
 const rootDirectory = require('path').resolve('./');
 
 // =========== GET ROUTES ===========

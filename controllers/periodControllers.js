@@ -1,4 +1,4 @@
-const database = require('../db');
+const database = require('../config/db');
 
 // =========== GET ROUTES ===========
 const getPeriods = async (request, response) => {

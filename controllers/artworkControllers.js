@@ -1,4 +1,4 @@
-const database = require('../db');
+const database = require('../config/db');
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request, response) => {
