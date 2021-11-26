@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
   });
   
 const uploadImage = multer({storage: storage});
+const upload = multer({storage: storage}).single('image');
 
 // =========== GET ROUTES ===========
 const getImageFile = async (request, response) => {
@@ -28,7 +29,21 @@ const getImageFile = async (request, response) => {
     response.sendFile(rootDirectory + '/media/' + filename);
 };
 
+// POST ROUTE TO POST ARTWORK + IMAGE SIMULTANEOUSLY
+const postArtworkData = (request, response, next) => {
+    uploadImage.single('file')(request, response, () => {
+      console.log(request.body);
+      next()
+    })
+}
+
+const handle = (request, response) => {
+    console.log('finished');
+    response.sendStatus(200);
+}
+
 module.exports = {
     getImageFile,
-    uploadImage
+    postArtworkData,
+    handle
 }
