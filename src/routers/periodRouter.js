@@ -5,7 +5,7 @@ const getPeriodRouter = () => {
     const periodRouter = express.Router();
 
     periodRouter.get('/', getPeriods);
-    periodRouter.get('/:id/artworks', getArtworksOfPeriod);
+    periodRouter.get('/:id(\\d+)/artworks', getArtworksOfPeriod);
 
     periodRouter.put('/', updatePeriod);
 

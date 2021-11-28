@@ -8,16 +8,16 @@ const getArtworkRouter = () => {
     artworkRouter.use(uploadImage.single('file'));
 
     artworkRouter.get('/', getArtworks);
-    artworkRouter.get('/:id', getArtworkById);
-    artworkRouter.get('/:id/periods', getPeriodsOfArtwork);
+    artworkRouter.get('/:id(\\d+)', getArtworkById);
+    artworkRouter.get('/:id(\\d+)/periods', getPeriodsOfArtwork);
 
-    artworkRouter.put('/:id', updateArtwork);
-    artworkRouter.put('/:artwork_id/periods/:period_id', putPeriodInArtwork);
+    artworkRouter.put('/:id(\\d+)', updateArtwork);
+    artworkRouter.put('/:artwork_id(\\d+)/periods/:period_id(\\d+)', putPeriodInArtwork);
 
     artworkRouter.post('/', postArtwork); // must be multipart/form-data
 
-    artworkRouter.delete('/:id', deleteArtwork);
-    artworkRouter.delete('/:artwork_id/periods/:period_id', deletePeriodFromArtwork);
+    artworkRouter.delete('/:id(\\d+)', deleteArtwork);
+    artworkRouter.delete('/:artwork_id(\\d+)/periods/:period_id(\\d+)', deletePeriodFromArtwork);
 
     return artworkRouter;
 };
