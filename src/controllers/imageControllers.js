@@ -11,7 +11,7 @@ const getImageFile = async (request, response, next) => {
         const filename = rows[0].file;
     
         response.set('Content-Type', 'image/jpg');
-        response.sendFile(rootDirectory + '/media/' + filename);
+        return response.sendFile(rootDirectory + '/media/' + filename);
     } catch (error) {
         next(error)
     };

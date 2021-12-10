@@ -14,7 +14,7 @@ const getArtworks = async (request, response, next) => {
         const { rows, rowCount } = await database().query('SELECT * FROM artworks LIMIT $1 OFFSET $2', [limit, offset]);
         if (rowCount === 0) throw new NotFoundError;
         
-        response.status(200).json(rows);
+        return response.status(200).json(rows);
     } catch (error) {
         next(error)        
     };    
@@ -25,7 +25,7 @@ const getArtworkById = async (request, response, next) => {
     try {
         const { rows, rowCount } = await database().query('SELECT * FROM artworks WHERE id=$1', [id]);
         if (rowCount === 0) throw new NotFoundError;
-        response.status(200).json(rows);
+        return response.status(200).json(rows);
     } catch (error) {
         next(error)        
     };
@@ -36,7 +36,7 @@ const getPeriodsOfArtwork = async (request, response, next) => {
     try {
         const { rows, rowCount } = await database().query('SELECT name FROM periods WHERE id IN (SELECT period_id FROM periods_artworks WHERE artwork_id=$1)', [id]);
         if (rowCount === 0) throw new NotFoundError;
-        response.status(200).json(rows);
+        return response.status(200).json(rows);
     } catch (error) {
         next(error)       
     };
@@ -60,7 +60,7 @@ const updateArtwork = async (request, response, next) => {
         };
 
         await database().query('UPDATE artworks SET file=$1, artist=$2, year=$3, title=$4 WHERE id=$5', [updateValues.file, updateValues.artist, updateValues.year, updateValues.title, id]);
-        response.status(200).send(`Artwork modified with ID: ${id}`);
+        return response.status(200).send(`Artwork modified with ID: ${id}`);
 
     } catch (error) {
         next(error)       
