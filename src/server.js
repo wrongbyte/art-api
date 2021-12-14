@@ -2,7 +2,7 @@ const express = require('express');
 const getArtworkRouter = require('./routers/artworkRouter');
 const getPeriodRouter = require('./routers/periodRouter');
 const getImageRouter = require('./routers/imageRouter');
-const errorMiddleware = require('./utils/error-middleware');
+const errorMiddleware = require('./middlewares/error-middleware');
 
 const app = express();
 const port = 3000;

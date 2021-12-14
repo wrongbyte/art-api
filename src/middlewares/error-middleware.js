@@ -1,4 +1,4 @@
-const { GeneralError } = require("./errors");
+const { GeneralError } = require("../utils/errors");
 
 const errorMiddleware = (error, request, response, next) => {
     if (error instanceof GeneralError) {
