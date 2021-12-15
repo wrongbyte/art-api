@@ -1,6 +1,7 @@
 const database = require('../config/db');
 const { BadRequestError, NotFoundError } = require('../utils/errors');
 const { isValidArtwork, isValidRequest } = require('../utils/validate-request');
+const processImageFile = require('../middlewares/process-image');
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request, response, next) => {
@@ -83,13 +84,13 @@ const putPeriodInArtwork = async (request, response, next) => {
 
 const postArtwork = async (request, response, next) => {
     const { title, artist, year } = request.body;
-    try {
-        const filename = request.file.originalname;
+    try{
+        const filename = await processImageFile(request, response);
         if (!isValidArtwork(request.body)) throw new BadRequestError('Fields missing');
         await database().query('INSERT INTO artworks (file, artist, year, title) VALUES ($1, $2, $3, $4)', [filename, artist, year, title]);
         return response.sendStatus(201);
-    } catch (error) {
-        next(error)
+    } catch(error) {
+        next(error);
     };
 };
 
