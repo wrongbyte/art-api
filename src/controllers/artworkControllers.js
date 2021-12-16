@@ -1,7 +1,7 @@
 import database from '../config/db.js';
 import { BadRequestError, NotFoundError } from '../utils/errors.js';
 import { isValidArtwork, isValidRequest } from '../utils/validate-request.js';
-import processImageFile from '../middlewares/process-image.js';
+import { processImageFile, bucket } from '../middlewares/process-image.js';
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request, response, next) => {
@@ -98,7 +98,11 @@ const postArtwork = async (request, response, next) => {
 const deleteArtwork = async (request, response, next) => {
     const { id } = request.params;
     try {
+        const { rows, rowCount } = await database().query('SELECT file FROM artworks WHERE id=$1', [id]);
+        if (rowCount === 0) throw new NotFoundError;
+        const filename = rows[0].file;
         await database().query('DELETE FROM artworks WHERE id=$1', [id]);
+        await bucket.file(filename).delete();
         return response.sendStatus(200);
     } catch (error) {
         next(error)
@@ -109,7 +113,6 @@ const deletePeriodFromArtwork = async (request, response, next) => {
     const { artwork_id, period_id } = request.params;
     try {
         if (!isValidRequest(artwork_id, period_id)) throw new BadRequestError('Fields missing');
-
         await database().query('DELETE FROM periods_artworks WHERE artwork_id=$1 AND period_id=$2', [artwork_id, period_id]);
         return response.sendStatus(200);
     } catch (error) {

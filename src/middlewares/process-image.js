@@ -17,7 +17,7 @@ const processImageFile = async (request, response) => {
         const metadata = await fileTypeFromBuffer(request.file.buffer);
         if (!whitelist.includes(metadata.mime)) {
             throw new BadRequestError('File type not allowed');
-        }
+        };
 
         const blob = bucket.file(request.file.originalname);
         const blobStream = blob.createWriteStream({
@@ -37,4 +37,7 @@ const processImageFile = async (request, response) => {
     }
 };
 
-export default processImageFile;
+export {
+    processImageFile,
+    bucket
+};
