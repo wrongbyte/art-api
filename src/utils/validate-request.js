@@ -11,7 +11,7 @@ const isValidRequest = (param1, param2) => {
     return true;
 };
 
-module.exports = {
+export {
     isValidArtwork,
     isValidRequest
 }

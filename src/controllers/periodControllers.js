@@ -1,6 +1,6 @@
-const database = require('../config/db');
-const { BadRequestError, NotFoundError } = require('../utils/errors');
-const { isValidRequest } = require('../utils/validate-request');
+import database from '../config/db.js';
+import { BadRequestError, NotFoundError } from '../utils/errors.js';
+import { isValidRequest } from '../utils/validate-request.js';
 
 // =========== GET ROUTES ===========
 const getPeriods = async (request, response, next) => {
@@ -55,7 +55,7 @@ const postPeriod = async (request, response, next) => {
     };
 };
 
-module.exports = {
+export {
     getPeriods,
     getArtworksOfPeriod,
     postPeriod,

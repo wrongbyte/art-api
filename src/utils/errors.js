@@ -30,7 +30,7 @@ class uploadError extends GeneralError {
     }
 }
 
-module.exports = {
+export {
     GeneralError,
     BadRequestError,
     NotFoundError,

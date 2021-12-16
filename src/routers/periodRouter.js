@@ -1,5 +1,5 @@
-const express = require('express');
-const { getPeriods, getArtworksOfPeriod, postPeriod, updatePeriod } = require('../controllers/periodControllers')
+import express from 'express';
+import { getPeriods, getArtworksOfPeriod, postPeriod, updatePeriod } from '../controllers/periodControllers.js';
 
 const getPeriodRouter = () => {
     const periodRouter = express.Router();
@@ -14,4 +14,4 @@ const getPeriodRouter = () => {
     return periodRouter;
 };
 
-module.exports = getPeriodRouter;
+export default getPeriodRouter;

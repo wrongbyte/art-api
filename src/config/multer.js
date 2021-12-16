@@ -1,5 +1,5 @@
-const multer = require('multer');  
-const { BadRequestError } = require('../utils/errors');
+import multer from 'multer'; 
+import { BadRequestError } from '../utils/errors.js';
 const uploadImage = multer({
   storage: multer.memoryStorage(),
   limits: {
@@ -15,4 +15,6 @@ const uploadImage = multer({
   }
 });
 
-module.exports = uploadImage;
+export {
+  uploadImage
+}

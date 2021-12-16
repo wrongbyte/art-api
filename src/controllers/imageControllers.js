@@ -1,5 +1,5 @@
-const database = require('../config/db');
-const { NotFoundError } = require('../utils/errors');
+import database from '../config/db.js';
+import { NotFoundError } from '../utils/errors.js';
 
 // =========== GET ROUTES ===========
 const getImageFile = async (request, response, next) => {
@@ -14,6 +14,6 @@ const getImageFile = async (request, response, next) => {
     };
 };
 
-module.exports = {
+export {
     getImageFile
 }

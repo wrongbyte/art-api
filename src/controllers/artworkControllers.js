@@ -1,7 +1,7 @@
-const database = require('../config/db');
-const { BadRequestError, NotFoundError } = require('../utils/errors');
-const { isValidArtwork, isValidRequest } = require('../utils/validate-request');
-const processImageFile = require('../middlewares/process-image');
+import database from '../config/db.js';
+import { BadRequestError, NotFoundError } from '../utils/errors.js';
+import { isValidArtwork, isValidRequest } from '../utils/validate-request.js';
+import processImageFile from '../middlewares/process-image.js';
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request, response, next) => {
@@ -117,7 +117,7 @@ const deletePeriodFromArtwork = async (request, response, next) => {
     };
 };
 
-module.exports = {
+export {
     getArtworks,
     getArtworkById,
     getPeriodsOfArtwork,

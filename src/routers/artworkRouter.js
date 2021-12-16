@@ -1,9 +1,9 @@
-const express = require('express');
-const { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork, deleteArtwork , deletePeriodFromArtwork } = require('../controllers/artworkControllers');
-const uploadImage = require('../config/multer');
+import express from 'express';
+import { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork, deleteArtwork , deletePeriodFromArtwork } from '../controllers/artworkControllers.js';
+import { uploadImage } from '../config/multer.js';
 
 const getArtworkRouter = () => {
-    artworkRouter = express.Router();
+    const artworkRouter = express.Router();
 
     artworkRouter.use(uploadImage.single('file'));
 
@@ -21,6 +21,6 @@ const getArtworkRouter = () => {
 
     return artworkRouter;
 };
-module.exports = getArtworkRouter;
+export default getArtworkRouter;
 
 

@@ -1,12 +1,23 @@
-const { format } = require('util');
-const { Storage } = require('@google-cloud/storage');
+import { fileTypeFromBuffer } from 'file-type';
+import { Storage } from '@google-cloud/storage';
+import { BadRequestError, uploadError } from '../utils/errors.js';
 const storage = new Storage({ keyFilename: 'keys.json'});
 const bucket = storage.bucket('art_api');
-const { BadRequestError, uploadError } = require('../utils/errors');
+
+const whitelist = [
+    'image/png',
+    'image/jpg',
+    'image/jpeg'
+]
 
 const processImageFile = async (request, response) => {
     try {
         if (!request.file) throw new BadRequestError('Missing file');
+
+        const metadata = await fileTypeFromBuffer(request.file.buffer);
+        if (!whitelist.includes(metadata.mime)) {
+            throw new BadRequestError('File type not allowed');
+        }
 
         const blob = bucket.file(request.file.originalname);
         const blobStream = blob.createWriteStream({
@@ -26,4 +37,4 @@ const processImageFile = async (request, response) => {
     }
 };
 
-module.exports = processImageFile;
+export default processImageFile;

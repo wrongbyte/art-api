@@ -1,4 +1,4 @@
-const { GeneralError } = require("../utils/errors");
+import { GeneralError } from "../utils/errors.js";
 
 const errorMiddleware = (error, request, response, next) => {
     if (error instanceof GeneralError) {
@@ -19,4 +19,4 @@ const errorMiddleware = (error, request, response, next) => {
     });
 };
 
-module.exports = errorMiddleware;
+export default errorMiddleware;
