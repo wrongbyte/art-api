@@ -1,6 +1,6 @@
 import database from '../config/db.js';
 import { BadRequestError, NotFoundError } from '../utils/errors.js';
-import { isValidRequest } from '../utils/validate-request.js';
+import { isValidRequest } from '../utils/helpers.js';
 
 // =========== GET ROUTES ===========
 const getPeriods = async (request, response, next) => {

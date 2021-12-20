@@ -1,6 +1,6 @@
 import database from '../config/db.js';
 import { BadRequestError, NotFoundError } from '../utils/errors.js';
-import { isValidArtwork, isValidRequest } from '../utils/validate-request.js';
+import { isValidArtwork, isValidRequest } from '../utils/helpers.js';
 import { processImageFile, bucket } from '../middlewares/process-image.js';
 
 // =========== GET ROUTES ===========
