@@ -1,0 +1,19 @@
+version: "3"
+services:
+    database:
+        image: "postgres:14"
+        volumes:
+          - ./data:/var/lib/postgresql/data
+        environment:
+          POSTGRES_DB: ${DB_DATABASE}
+          POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+          - "5432:5432"
+        expose:
+          - "5432"
+    api:
+        build: .
+        ports: 
+          - ${APP_PORT}:${APP_PORT}
+        depends_on:
+          - "database"

@@ -4,11 +4,11 @@ export default async (database, retries = 5) => {
         await database().connect();
         console.log('Database connected');
         return;
-      } catch(error) {
+      } catch (error) {
         retries -= 1;
-        console.log('Error in database connection.');
+        console.log(`Error in database connection. Retries left: ${retries}`);
         console.log(error);
-        await new Promise(res => setTimeout(res, 5000));
+        await new Promise(res => setTimeout(res, 15000));
       };
     }
   };

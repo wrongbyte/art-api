@@ -1,15 +1,16 @@
 {
-  "name": "artapi",
+  "name": "art-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A small REST API to manage artworks",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "start": "node -r dotenv/config . && node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "wrongbyte",
+  "license": "MIT",
   "dependencies": {
     "@google-cloud/storage": "^5.16.1",
     "dotenv": "^10.0.0",
