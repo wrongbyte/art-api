@@ -7,7 +7,7 @@ const getPeriodRouter = () => {
     periodRouter.get('/', getPeriods);
     periodRouter.get('/:id(\\d+)/artworks', getArtworksOfPeriod);
 
-    periodRouter.put('/', updatePeriod);
+    periodRouter.put('/:id(\\d+)', updatePeriod);
 
     periodRouter.post('/', postPeriod);
 
