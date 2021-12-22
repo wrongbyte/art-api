@@ -14,12 +14,22 @@ First, clone this repository.
 
 To perform actions such as creating and deleting the image files, you will need to set a bucket in google cloud storage. Do that in order to be able to use a `key.json` file - and change the URL redirected in the image router to that of your bucket. 
 
-After that, set the .env files and run `docker-compose up`. The database along with the tables will be created.
+After that, set the `.env` file and run `docker-compose up`. The database along with the tables will be created.
 
+Note that the `.env` file must have the following structure:
+
+```
+APP_PORT = 
+DB_USER = 
+DB_HOST =
+DB_PASSWORD =
+DB_DATABASE=
+```
 ## Endpoints
 There are three main routes: **artwork, period and image**. 
 - ### Artwork
 Contains the fields `id` (automatically set), `title`, `artist`, `year` and `file` (a string referring to the name of corresponding uploaded file).
+
 Example: `/artwork/90/periods`
 
 | Type   | Endpoint           | Description                                                                |
