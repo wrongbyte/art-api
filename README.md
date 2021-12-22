@@ -9,9 +9,18 @@ correct information, though).
 - File-type for file signature checking
 - Docker for container isolation
 
+## How to use
+First, clone this repository.
+
+To perform actions such as creating and deleting the image files, you will need to set a bucket in google cloud storage. Do that in order to be able to use a `key.json` file - and change the URL redirected in the image router to that of your bucket. 
+
+After that, set the .env files and run `docker-compose up`. The database along with the tables will be created.
+
 ## Endpoints
-There are three important routes: **artwork, period and image**. 
+There are three main routes: **artwork, period and image**. 
 - ### Artwork
+Contains the fields `id` (automatically set), `title`, `artist`, `year` and `file` (a string referring to the name of corresponding uploaded file).
+Example: `/artwork/90/periods`
 
 | Type   | Endpoint           | Description                                                                |
 | ------ | ------------------ | -------------------------------------------------------------------------- |
@@ -26,6 +35,8 @@ There are three important routes: **artwork, period and image**.
 
 
 - ### Period
+Example: `/period?page=0&limit=10`
+
 | Type   | Endpoint           | Description                                                                |
 | ------ | ------------------ | -------------------------------------------------------------------------- |
 | GET    | `/`                | Shows all periods. **Requires limit and page query parameters.**           |
@@ -35,6 +46,8 @@ There are three important routes: **artwork, period and image**.
 
 
 - ### Image
+Example: `/image/90`
+
 | Type   | Endpoint           | Description                                                                |
 | ------ | ------------------ | -------------------------------------------------------------------------- |
 | GET    | `/:id`             | Shows the image corresponding to artwork with given id.                    |
