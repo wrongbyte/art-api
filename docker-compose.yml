@@ -4,8 +4,10 @@ services:
         image: "postgres:14"
         volumes:
           - ./data:/var/lib/postgresql/data
+          - ./init.sql:/docker-entrypoint-initdb.d/init.sql
         environment:
           POSTGRES_DB: ${DB_DATABASE}
+          POSTGRES_USER: ${DB_USER}
           POSTGRES_PASSWORD: ${DB_PASSWORD}
         ports:
           - "5432:5432"
