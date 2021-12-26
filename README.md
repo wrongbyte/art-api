@@ -1,6 +1,8 @@
 # art-api: a REST API to manage artworks
 This project was inspired on an anki deck that reunites 651 artworks. You can grab the data from https://ankiweb.net/shared/info/685421036 (maybe not all notes contain
-correct information, though).
+correct information, though). 
+
+In order to retrieve information of all cards, I made a Python script.
 
 ## Technologies used:
 - NodeJS / Express
