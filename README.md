@@ -6,6 +6,7 @@ In order to retrieve information of all cards, I made a Python script.
 
 ## Technologies used:
 - NodeJS / Express
+- PostgreSQL
 - Google Cloud storage for file storage
 - Multer for uploading files
 - File-type for file signature checking
