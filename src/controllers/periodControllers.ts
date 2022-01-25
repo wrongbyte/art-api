@@ -1,10 +1,11 @@
-import database from '../config/db.js';
-import { BadRequestError, NotFoundError } from '../utils/errors.js';
-import { isValidRequest } from '../utils/helpers.js';
+import database from '../config/db';
+import { BadRequestError, NotFoundError } from '../utils/errors';
+import { isValidRequest } from '../utils/helpers';
+import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========
-const getPeriods = async (request, response, next) => {
-    let { page, limit } = request.query;
+const getPeriods = async (request: Request, response: Response, next: NextFunction) => {
+    let { page, limit } = request.query as any;
     try {
         if (!isValidRequest(page, limit)) throw new BadRequestError('Pagination missing');
     
@@ -19,7 +20,7 @@ const getPeriods = async (request, response, next) => {
     };
 };
 
-const getArtworksOfPeriod = async (request, response, next) => {
+const getArtworksOfPeriod = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
         const { rowCount, rows } = await database().query('SELECT * FROM artworks WHERE id IN (SELECT artwork_id FROM periods_artworks WHERE period_id=$1)', [id]);
@@ -31,7 +32,7 @@ const getArtworksOfPeriod = async (request, response, next) => {
 };
 
 // =========== PUT ROUTES ===========
-const updatePeriod = async (request, response, next) => {
+const updatePeriod = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     const { name } = request.body;
     try {
@@ -44,7 +45,7 @@ const updatePeriod = async (request, response, next) => {
 };
 
 // =========== POST ROUTES ===========
-const postPeriod = async (request, response, next) => {
+const postPeriod = async (request: Request, response: Response, next: NextFunction) => {
     const { period } = request.body;
     try {
         if (!period) throw new BadRequestError('Fields missing');

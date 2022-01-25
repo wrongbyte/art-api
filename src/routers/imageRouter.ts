@@ -1,5 +1,5 @@
 import express from 'express';
-import { getImageFile } from '../controllers/imageControllers.js';
+import { getImageFile } from '../controllers/imageControllers';
 
 // only GET because POST is handled along with artwork data in artwork routes
 const getImageRouter = () => {

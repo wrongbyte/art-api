@@ -1,4 +1,4 @@
-export default async (database, retries = 5) => {
+export default async (database: any, retries = 5) => {
     while (retries > 0) {
       try {
         await database().connect();

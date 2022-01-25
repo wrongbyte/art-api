@@ -1,4 +1,6 @@
 class GeneralError extends Error {
+    message!: string;
+    status!: number;
     constructor () {
         super();
         this.message;
@@ -7,7 +9,9 @@ class GeneralError extends Error {
 };
 
 class BadRequestError extends GeneralError {
-    constructor (message) {
+    message: string;
+    status: number;
+    constructor (message: string) {
         super();
         this.message = message;
         this.status = 400;
@@ -15,6 +19,8 @@ class BadRequestError extends GeneralError {
 };
 
 class NotFoundError extends GeneralError {
+    message: string;
+    status: number;
     constructor () {
         super();
         this.message = 'Not found';
@@ -23,7 +29,9 @@ class NotFoundError extends GeneralError {
 };
 
 class uploadError extends GeneralError {
-    constructor (message) {
+    message: string;
+    status: number;
+    constructor (message: string) {
         super();
         this.message = message;
         this.status = 500;

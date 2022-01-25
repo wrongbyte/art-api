@@ -1,8 +1,9 @@
-import { GeneralError } from "../utils/errors.js";
+import { GeneralError } from "../utils/errors";
+import { Request, Response, NextFunction } from 'express';
 
-const errorMiddleware = (error, request, response, next) => {
+const errorMiddleware = (error: any, request: Request, response: Response, next: NextFunction) => {
     if (error instanceof GeneralError) {
-        return response.status(error.status).json({
+        return response.status(error['status']).json({
             status: 'error',
             message: error.message
         })

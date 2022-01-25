@@ -1,8 +1,9 @@
-import database from '../config/db.js';
-import { NotFoundError } from '../utils/errors.js';
+import database from '../config/db';
+import { NotFoundError } from '../utils/errors';
+import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========
-const getImageFile = async (request, response, next) => {
+const getImageFile = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
         const { rows, rowCount } = await database().query('SELECT file FROM artworks WHERE id=$1', [id]);

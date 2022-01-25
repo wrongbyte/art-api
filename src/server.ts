@@ -1,12 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import getArtworkRouter from './routers/artworkRouter.js';
-import getPeriodRouter from './routers/periodRouter.js';
-import getImageRouter from './routers/imageRouter.js';
-import errorMiddleware from './middlewares/error-middleware.js';
-import testConnection from './utils/check-db-connection.js';
-import database from './config/db.js';
+import getArtworkRouter from './routers/artworkRouter';
+import getPeriodRouter from './routers/periodRouter';
+import getImageRouter from './routers/imageRouter';
+import errorMiddleware from './middlewares/error-middleware';
+import testConnection from './utils/check-db-connection';
+import database from './config/db';
 
 // Verify if the db is up first
 testConnection(database);

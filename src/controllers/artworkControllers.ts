@@ -1,11 +1,12 @@
-import database from '../config/db.js';
-import { BadRequestError, NotFoundError } from '../utils/errors.js';
-import { isValidArtwork, isValidRequest } from '../utils/helpers.js';
-import { processImageFile, bucket } from '../middlewares/process-image.js';
+import database from '../config/db';
+import { BadRequestError, NotFoundError } from '../utils/errors';
+import { isValidArtwork, isValidRequest } from '../utils/helpers';
+import { processImageFile, bucket } from '../middlewares/process-image';
+import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========
-const getArtworks = async (request, response, next) => {
-    let { page, limit } = request.query;
+const getArtworks = async (request: Request, response: Response, next: NextFunction) => {
+    let { page, limit } = request.query as any;
     try {
         if (!isValidRequest(page, limit)) throw new BadRequestError('Pagination missing');
 
@@ -21,7 +22,7 @@ const getArtworks = async (request, response, next) => {
     };    
 };
 
-const getArtworkById = async (request, response, next) => {
+const getArtworkById = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
         const { rows, rowCount } = await database().query('SELECT * FROM artworks WHERE id=$1', [id]);
@@ -32,7 +33,7 @@ const getArtworkById = async (request, response, next) => {
     };
 };
 
-const getPeriodsOfArtwork = async (request, response, next) => {
+const getPeriodsOfArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
         const { rows, rowCount } = await database().query('SELECT name FROM periods WHERE id IN (SELECT period_id FROM periods_artworks WHERE artwork_id=$1)', [id]);
@@ -44,7 +45,7 @@ const getPeriodsOfArtwork = async (request, response, next) => {
 };
 
 // =========== PUT ROUTES ===========
-const updateArtwork = async (request, response, next) => {
+const updateArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     const { file, artist, year, title } = request.body;
     try {
@@ -68,7 +69,7 @@ const updateArtwork = async (request, response, next) => {
     };
 };
 
-const putPeriodInArtwork = async (request, response, next) => {
+const putPeriodInArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { artwork_id, period_id } = request.params;
     try {
         if (!isValidRequest(artwork_id, period_id)) throw new BadRequestError('Fields missing');
@@ -82,7 +83,7 @@ const putPeriodInArtwork = async (request, response, next) => {
 // =========== POST ROUTES ===========
 // The postArtwork works with multipart form data, because we need to upload the corresponding image file for the artwork when we submit it.
 
-const postArtwork = async (request, response, next) => {
+const postArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { title, artist, year } = request.body;
     try{
         const filename = await processImageFile(request, response);
@@ -95,7 +96,7 @@ const postArtwork = async (request, response, next) => {
 };
 
 // =========== DELETE ROUTES ===========
-const deleteArtwork = async (request, response, next) => {
+const deleteArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
         const { rows, rowCount } = await database().query('SELECT file FROM artworks WHERE id=$1', [id]);
@@ -109,7 +110,7 @@ const deleteArtwork = async (request, response, next) => {
     };
 };
 
-const deletePeriodFromArtwork = async (request, response, next) => {
+const deletePeriodFromArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { artwork_id, period_id } = request.params;
     try {
         if (!isValidRequest(artwork_id, period_id)) throw new BadRequestError('Fields missing');

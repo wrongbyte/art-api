@@ -1,6 +1,6 @@
 import express from 'express';
-import { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork, deleteArtwork , deletePeriodFromArtwork } from '../controllers/artworkControllers.js';
-import { uploadImage } from '../config/multer.js';
+import { getArtworks, getArtworkById, getPeriodsOfArtwork, updateArtwork, putPeriodInArtwork, postArtwork, deleteArtwork , deletePeriodFromArtwork } from '../controllers/artworkControllers';
+import { uploadImage } from '../config/multer';
 
 const getArtworkRouter = () => {
     const artworkRouter = express.Router();
