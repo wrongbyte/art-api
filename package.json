@@ -4,8 +4,8 @@
   "description": "A small REST API to manage artworks",
   "main": "build/server.js",
   "scripts": {
-    "dev": "nodemon build/server.js",
-    "start": "ts-node -r dotenv/config . && ts-node src/server.ts",
+    "prestart": "tsc",
+    "start": "node -r dotenv/config . && node build/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,7 +14,6 @@
   "dependencies": {
     "@google-cloud/storage": "^5.16.1",
     "@types/morgan": "^1.9.3",
-    "@types/multer": "^1.4.7",
     "@types/pg": "^8.6.4",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -27,6 +26,7 @@
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
+    "@types/multer": "^1.4.7",
     "@types/node": "^17.0.10",
     "typescript": "^4.5.5"
   }

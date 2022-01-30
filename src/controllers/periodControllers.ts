@@ -5,12 +5,11 @@ import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========
 const getPeriods = async (request: Request, response: Response, next: NextFunction) => {
-    let { page, limit } = request.query as any;
+    let { page, limit } = request.query as { page: string, limit: string };
     try {
         if (!isValidRequest(page, limit)) throw new BadRequestError('Pagination missing');
     
-        limit = parseInt(limit);
-        const offset = limit * parseInt(page);
+        const offset = parseInt(limit) * parseInt(page);
     
         const { rowCount, rows } = await database().query('SELECT * FROM periods LIMIT $1 OFFSET $2', [limit, offset]);
         if (rowCount === 0) throw new NotFoundError;

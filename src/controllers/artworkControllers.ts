@@ -6,12 +6,11 @@ import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request: Request, response: Response, next: NextFunction) => {
-    let { page, limit } = request.query as any;
+    let { page, limit } = request.query as { page: string, limit: string };
     try {
         if (!isValidRequest(page, limit)) throw new BadRequestError('Pagination missing');
 
-        limit = parseInt(limit);
-        const offset = limit * parseInt(page);
+        const offset = parseInt(limit) * parseInt(page);
 
         const { rows, rowCount } = await database().query('SELECT * FROM artworks LIMIT $1 OFFSET $2', [limit, offset]);
         if (rowCount === 0) throw new NotFoundError;
@@ -69,6 +68,7 @@ const updateArtwork = async (request: Request, response: Response, next: NextFun
     };
 };
 
+//empty body
 const putPeriodInArtwork = async (request: Request, response: Response, next: NextFunction) => {
     const { artwork_id, period_id } = request.params;
     try {

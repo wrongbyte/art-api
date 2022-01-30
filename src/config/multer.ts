@@ -7,7 +7,7 @@ const uploadImage = multer({
   limits: {
     fileSize: 1024 * 1024 * 10
   },
-  fileFilter: (req: Request, file: any, cb: any) => {
+  fileFilter: (req: Request, file, cb) => {
     if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg'){
       cb(null, true);
     } else {
