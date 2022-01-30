@@ -1,5 +1,5 @@
-import database from '../config/db';
-import { NotFoundError } from '../utils/errors';
+import database from '../config/db.js';
+import { NotFoundError } from '../utils/errors.js';
 import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPeriods, getArtworksOfPeriod, postPeriod, updatePeriod } from '../controllers/periodControllers';
+import { getPeriods, getArtworksOfPeriod, postPeriod, updatePeriod } from '../controllers/periodControllers.js';
 
 const getPeriodRouter = () => {
     const periodRouter = express.Router();

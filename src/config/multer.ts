@@ -1,5 +1,5 @@
 import multer from 'multer'; 
-import { BadRequestError } from '../utils/errors';
+import { BadRequestError } from '../utils/errors.js';
 import { Request } from 'express';
 
 const uploadImage = multer({

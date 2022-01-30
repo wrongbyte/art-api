@@ -1,4 +1,4 @@
-import { GeneralError } from "../utils/errors";
+import { GeneralError } from "../utils/errors.js";
 import { Request, Response, NextFunction } from 'express';
 
 const errorMiddleware = (error: GeneralError, request: Request, response: Response, next: NextFunction) => {

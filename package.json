@@ -8,6 +8,7 @@
     "start": "node -r dotenv/config . && node build/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type":"module",
   "keywords": [],
   "author": "wrongbyte",
   "license": "MIT",

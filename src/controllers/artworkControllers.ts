@@ -1,7 +1,7 @@
-import database from '../config/db';
-import { BadRequestError, NotFoundError } from '../utils/errors';
-import { isValidArtwork, isValidRequest } from '../utils/helpers';
-import { processImageFile, bucket } from '../middlewares/process-image';
+import database from '../config/db.js';
+import { BadRequestError, NotFoundError } from '../utils/errors.js';
+import { isValidArtwork, isValidRequest } from '../utils/helpers.js';
+import { processImageFile, bucket } from '../middlewares/process-image.js';
 import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========

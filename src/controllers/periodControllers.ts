@@ -1,6 +1,6 @@
-import database from '../config/db';
-import { BadRequestError, NotFoundError } from '../utils/errors';
-import { isValidRequest } from '../utils/helpers';
+import database from '../config/db.js';
+import { BadRequestError, NotFoundError } from '../utils/errors.js';
+import { isValidRequest } from '../utils/helpers.js';
 import { Request, Response, NextFunction } from 'express';
 
 // =========== GET ROUTES ===========
