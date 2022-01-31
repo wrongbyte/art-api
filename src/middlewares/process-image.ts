@@ -1,5 +1,4 @@
 import { fileTypeFromBuffer } from 'file-type';
-// import filetype from 'file-type';
 import { Storage } from '@google-cloud/storage';
 import { BadRequestError, uploadError } from '../utils/errors.js';
 import { Request, Response } from 'express';
@@ -26,7 +25,7 @@ const processImageFile = async (request: Request, response: Response) => {
             resumable: false
         });
     
-        blobStream.on('error', (error: any) => {
+        blobStream.on('error', (error: Error) => {
             throw new uploadError(error.message);
         });
 
