@@ -33,8 +33,8 @@ const processImageFile = async (request: Request, response: Response) => {
 
         return request.file.originalname;
 
-    } catch (error: any) {
-        throw new uploadError(error.message);
+    } catch (error: unknown) {
+        throw new uploadError((<Error>error).message);
     }
 };
 

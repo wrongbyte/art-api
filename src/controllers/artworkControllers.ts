@@ -1,8 +1,9 @@
 import database from '../config/db.js';
 import { BadRequestError, NotFoundError } from '../utils/errors.js';
-import { isValidArtwork, isValidRequest } from '../utils/helpers.js';
+import { isValidRequest } from '../utils/helpers.js';
 import { processImageFile, bucket } from '../middlewares/process-image.js';
 import { Request, Response, NextFunction } from 'express';
+import { Artwork, isArtwork } from '../types/Artwork.js';
 
 // =========== GET ROUTES ===========
 const getArtworks = async (request: Request, response: Response, next: NextFunction) => {
@@ -84,10 +85,11 @@ const putPeriodInArtwork = async (request: Request, response: Response, next: Ne
 // The postArtwork works with multipart form data, because we need to upload the corresponding image file for the artwork when we submit it.
 
 const postArtwork = async (request: Request, response: Response, next: NextFunction) => {
-    const { title, artist, year } = request.body;
     try{
+        if (!isArtwork(request.body)) throw new BadRequestError('Invalid request, fields missing');
+        const { title, artist, year } : Artwork = request.body;
+
         const filename = await processImageFile(request, response);
-        if (!isValidArtwork(request.body)) throw new BadRequestError('Fields missing');
         await database().query('INSERT INTO artworks (file, artist, year, title) VALUES ($1, $2, $3, $4)', [filename, artist, year, title]);
         return response.sendStatus(201);
     } catch(error) {
